@@ -1,0 +1,7 @@
+base   authchained
+author Philipp Neuser
+email  pneuser@physik.fu-berlin.de
+date   2013-05-29
+name   auth plugin
+desc   Provides authentication against local password storage
+url    http://www.dokuwiki.org/plugin:authplain
