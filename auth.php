@@ -28,19 +28,19 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 #      parent::__constructor();
 
       //check if there is allready an authentication plugin selected
-      if(isset($_SESSION[DOKU_COOKIE]['auth']['chained']['module']) && 
-	 !empty($_SESSION[DOKU_COOKIE]['auth']['chained']['module']) )
+      if(isset($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']) && 
+	 !empty($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']) )
       {
 	 //get previously selected authentication plugin
-	 $tmp_plugin = $_SESSION[DOKU_COOKIE]['auth']['chained']['module'];
+	 $tmp_plugin = $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'];
 	 require_once(DOKU_INC."lib/plugins/".$tmp_plugin."/auth.php");
 	 $tmp_classname = "auth_plugin_".$tmp_plugin;
 	 $this->chained_auth = new $tmp_classname;
       }
       else {
           //get authentication plugins
-         if(isset($conf['auth']['chained']['authtypes'])){
-	    foreach(explode(":",$conf['auth']['chained']['authtypes']) as 
+         if(isset($conf['plugin']['authchained']['authtypes'])){
+	    foreach(explode(":",$conf['plugin']['authchained']['authtypes']) as 
 		  $tmp_plugin){
 	       require_once(DOKU_INC."lib/plugins/".$tmp_plugin."/auth.php");
    	       $tmp_classname = "auth_plugin_".$tmp_plugin;
@@ -73,7 +73,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 	  {
 	     #echo "TEST AUTHMANAGER!!!";
 	     if($module[0] == 
-		$conf['auth']['chained']['usermanager_authtype']){
+		$conf['plugin']['authchained']['usermanager_authtype']){
 		   $module[1]->canDo($cap);
 		}
 	  }
@@ -110,7 +110,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     public function logOff() {
 	 if(!is_null($this->chained_auth))
 	    $this->chained_auth->logOff();
-	 unset($_SESSION[DOKU_COOKIE]['auth']['chained']['module']);
+	 unset($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']);
     }
 
     /**
@@ -151,14 +151,14 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 	  {
 	     if($module[1]->trustExternal($user, $pass))
 	     {
-		$_SESSION[DOKU_COOKIE]['auth']['chained']['module'] = 
+		$_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = 
 		   $module[0];
 		$this->chained_auth = $module[1];
 		return true;
 	     }else{
 		 if($module[1]->checkPass($user, $pass))
 		 {
-		    $_SESSION[DOKU_COOKIE]['auth']['chained']['module'] =
+		    $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] =
 		                          $module[0];
 		    $this->chained_auth = $module[1];
 		    return true;
@@ -167,7 +167,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 	  }else{
 	     if($module[1]->checkPass($user, $pass))
 	     {
-		$_SESSION[DOKU_COOKIE]['auth']['chained']['module'] = 
+		$_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = 
 		   $module[0];
 		$this->this->chained_auth = $module[1];
 		return true;
