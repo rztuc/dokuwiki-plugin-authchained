@@ -67,6 +67,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
      */
    public function canDo($cap) {
       global $conf;
+#      print_r($cap);
        if(is_null($this->chained_auth))
        {
 	  foreach($this->chained_plugins as $module)
@@ -98,7 +99,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 	 if(is_null($this->chained_auth))
              return false;
 	 else
-             return $this->chained_auth->canDo($cap);
+             return $this->chained_auth->triggerUserMod($type, $params);
     }
 
     /**
