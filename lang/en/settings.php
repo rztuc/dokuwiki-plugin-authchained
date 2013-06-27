@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * English language file for authchained plugin
  * @author Philipp Neuser <pneuser@physik.fu-berlin.de>
