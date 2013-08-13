@@ -45,7 +45,6 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                 $this->success = false;
             }
         } else {
-                        print_r($this->getConf('authtypes'));
             //get authentication plugins
             if($this->getConf('authtypes')){
                 foreach(explode(":",$this->getConf('authtypes')) as $tmp_plugin){
