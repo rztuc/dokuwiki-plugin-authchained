@@ -75,7 +75,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 	     #echo "TEST AUTHMANAGER!!!";
 	     if($module[0] == 
 		$conf['plugin']['authchained']['usermanager_authtype']){
-		   $module[1]->canDo($cap);
+		   return $module[1]->canDo($cap);
 		}
 	  }
 	  return false;
