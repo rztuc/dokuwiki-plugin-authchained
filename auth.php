@@ -204,7 +204,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                 } else {
                     if($module[1]->checkPass($user, $pass)) {
                         $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
-                        $this->this->chained_auth = $module[1];
+                        $this->chained_auth = $module[1];
                         return true;
                     }
                 }
