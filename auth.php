@@ -230,8 +230,15 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     * @return  array containing user data or false
     */
     public function getUserData($user) {
+        global $ACT;
         //if(!$this->cando['external']) msg("no valid authorisation system in use", -1);
         //       echo "TESTSETEST";
+	
+        //print_r($this->chained_auth);
+        if ($ACT == "admin" && $_REQUEST['page']=="usermanager") {
+            if(!is_null($this->usermanager_auth))
+                return $this->usermanager_auth->getUserData($user);
+
         if(is_null($this->chained_auth)) {
             foreach($this->chained_plugins as $module) {
                 $tmp_array = $module[1]->getUserData($user);
