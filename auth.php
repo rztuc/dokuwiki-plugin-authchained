@@ -238,6 +238,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
         if ($ACT == "admin" && $_REQUEST['page']=="usermanager") {
             if(!is_null($this->usermanager_auth))
                 return $this->usermanager_auth->getUserData($user);
+	}
 
         if(is_null($this->chained_auth)) {
             foreach($this->chained_plugins as $module) {
