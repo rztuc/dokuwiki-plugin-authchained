@@ -1,7 +1,7 @@
 base   authchained
-author Philipp Neuser
-email  pneuser@physik.fu-berlin.de
-date   2013-07-30
-name   auth plugin
+author Philipp Neuser, Christian Marg
+email  pneuser@physik.fu-berlin.de, marg@rz.tu-clausthal.de
+date   2014-01-07
+name   chained auth plugin
 desc   Delegates authentication to multiple different authentication plugins
 url    http://www.dokuwiki.org/plugin:authchained
