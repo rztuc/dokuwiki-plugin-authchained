@@ -229,7 +229,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     * @param   string $user the user name
     * @return  array containing user data or false
     */
-    public function getUserData($user) {
+    public function getUserData($user, $requireGroups=true) {
         global $ACT;
         //if(!$this->cando['external']) msg("no valid authorisation system in use", -1);
         //       echo "TESTSETEST";
