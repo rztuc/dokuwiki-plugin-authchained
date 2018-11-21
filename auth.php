@@ -240,7 +240,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                 return $this->usermanager_auth->getUserData($user);
 	}
 
-        if(is_null($this->chained_auth)) {
+        if(is_null($this->chained_auth)||(!is_null($INPUT->server) && $user != $INPUT->server->str('REMOTE_USER'))) {
             foreach($this->chained_plugins as $module) {
                 $tmp_array = $module[1]->getUserData($user);
                 if(!is_bool($tmp_array))
