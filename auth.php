@@ -44,7 +44,8 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             if ( is_null($this->chained_auth) || !$this->chained_auth->success ) {
                 $this->success = false;
             }
-        } else {
+        } 
+
             //get authentication plugins
             if($this->getConf('authtypes')){
                 foreach(explode(":",$this->getConf('authtypes')) as $tmp_plugin){
@@ -61,7 +62,6 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             } else {
                 $success = false;
             }
-        }
 
         // If defined, instantiate usermanager authtype.
         // No need to check for duplicates, "plugin_load" does that for us.
@@ -230,7 +230,8 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     * @return  array containing user data or false
     */
     public function getUserData($user, $requireGroups=true) {
-        global $ACT;
+        global $ACT, $INPUT;
+
         //if(!$this->cando['external']) msg("no valid authorisation system in use", -1);
         //       echo "TESTSETEST";
 	
