@@ -46,22 +46,22 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             }
         } 
 
-            //get authentication plugins
-            if($this->getConf('authtypes')){
-                foreach(explode(":",$this->getConf('authtypes')) as $tmp_plugin){
-                    $tmp_class =& plugin_load('auth',$tmp_plugin);
+        //get authentication plugins
+        if($this->getConf('authtypes')){
+            foreach(explode(":",$this->getConf('authtypes')) as $tmp_plugin){
+                $tmp_class =& plugin_load('auth',$tmp_plugin);
 
-                    if ( !is_null($tmp_class) || $tmp_class->success ) {
-                        $tmp_module = array($tmp_plugin,$tmp_class);
-                        array_push($this->chained_plugins, $tmp_module);
-                    } else {
-                        msg("Problem constructing $tmp_plugin",-1);
-                        $this->success = false;
-                    }
+                if ( !is_null($tmp_class) || $tmp_class->success ) {
+                    $tmp_module = array($tmp_plugin,$tmp_class);
+                    array_push($this->chained_plugins, $tmp_module);
+                } else {
+                    msg("Problem constructing $tmp_plugin",-1);
+                    $this->success = false;
                 }
-            } else {
-                $success = false;
             }
+        } else {
+            $success = false;
+        }
 
         // If defined, instantiate usermanager authtype.
         // No need to check for duplicates, "plugin_load" does that for us.
