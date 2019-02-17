@@ -107,6 +107,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             switch($cap) {
                 case 'Profile':
                 case 'logout':
+                case 'external':
                     //Depends on current user.
                     return $this->chained_auth->canDo($cap);
                 case 'UserMod':
@@ -132,8 +133,6 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                         // assume we want profile info.
                         return $this->chained_auth->canDo($cap);
                     }
-                case 'external':
-                    return $this->chained_auth->canDo($cap);
                 default:
                     //Everything else (false)
                     return parent::canDo($cap);
@@ -170,7 +169,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     */
     public function trustExternal($user, $pass, $sticky = false) {
         foreach($this->chained_plugins as $module) {
-            if($module[1]->canDo('external') && $module[1]->trustExternal($user, $pass)) {
+            if($module[1]->canDo('external') && $module[1]->trustExternal($user, $pass, $sticky)) {
                 $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
                 $this->chained_auth = $module[1];
                 return true;
