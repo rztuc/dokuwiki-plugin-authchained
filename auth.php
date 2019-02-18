@@ -8,7 +8,7 @@ if(!defined('DOKU_INC')) die();
 * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
 * @author     Philipp Neuser <pneuser@physik.fu-berlin.de>
 * @author     Christian Marg <marg@rz.tu-clausthal.de>
-* 
+*
 * Based on "Chained authentication backend"
 * by Grant Gardner <grant@lastweekend.com.au>
 * see https://www.dokuwiki.org/auth:ggauth
@@ -23,8 +23,8 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 
     /**
     * Constructor.
-    * 
-    * Loads all configured plugins or the authentication plugin of the 
+    *
+    * Loads all configured plugins or the authentication plugin of the
     * logged in user.
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -36,7 +36,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
         #      parent::__constructor();
 
         //check if there is already an authentication plugin selected
-        if(     isset($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']) && 
+        if(     isset($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']) &&
                 !empty($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']) ) {
 
             //get previously selected authentication plugin
@@ -44,7 +44,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             if ( is_null($this->chained_auth) || !$this->chained_auth->success ) {
                 $this->success = false;
             }
-        } 
+        }
 
         //get authentication plugins
         if($this->getConf('authtypes')){
@@ -71,17 +71,17 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                     msg("Problem constructing usermanager authtype: ".$this->getConf('usermanager_authtype'),-1);
                     $this->success = false;
             }
-        } else { 
+        } else {
             $this->usermanager_auth =& $this->chained_auth;
         }
 
         //debug
-        //      print_r($chained_plugins);
+        // print_r($chained_plugins);
     }
 
     /**
     * Forwards the authentication to configured authplugins.
-    * Returns true, if the usermanager authtype has the capability and no user 
+    * Returns true, if the usermanager authtype has the capability and no user
     * is logged in.
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -141,14 +141,14 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user and 
+    * Forwards the result of the auth plugin of the logged in user and
     * unsets our session variable.
     * @see     auth_logoff()
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de
     * @author  Christian Marg <marg@rz.tu-clausthal.de>
     */
     public function logOff() {
-        if(!is_null($this->chained_auth)) 
+        if(!is_null($this->chained_auth))
             $this->chained_auth->logOff();
         unset($_SESSION[DOKU_COOKIE]['plugin']['authchained']['module']);
     }
@@ -174,8 +174,8 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     /**
     * Check user+password [ MUST BE OVERRIDDEN ]
     *
-    * Checks if the given user exists in one of the plugins and checks 
-    * against the given password. The first plugin returning true becomes 
+    * Checks if the given user exists in one of the plugins and checks
+    * against the given password. The first plugin returning true becomes
     * auth plugin of the user session.
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de
@@ -205,9 +205,9 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
-    * checks all plugins if the users exists. The first plugin returning 
-    * data is used. 
+    * Forwards the result of the auth plugin of the logged in user or
+    * checks all plugins if the users exists. The first plugin returning
+    * data is used.
     *
     * name string  full name of the user
     * mail string  email addres of the user
@@ -223,7 +223,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 
         //if(!$this->cando['external']) msg("no valid authorisation system in use", -1);
         //       echo "TESTSETEST";
-	
+
         //print_r($this->chained_auth);
         if ($ACT == "admin" && $_REQUEST['page']=="usermanager") {
             if(!is_null($this->usermanager_auth))
@@ -245,7 +245,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns null.
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -267,7 +267,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns false
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -286,7 +286,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns false
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -304,7 +304,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns 0
     *
     * @author Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -322,7 +322,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns empty array
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -343,7 +343,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns false
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -361,7 +361,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns empty array
     *
     * @author  Philipp Neuser <pneuser@physik.fu-berlin.de>
@@ -380,7 +380,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     }
 
     /**
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns true
     *
     * @return bool
@@ -394,7 +394,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 
     /**
     * Sanitize a given username [OPTIONAL]
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns false
     *
     *
@@ -418,7 +418,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
 
     /**
     * Sanitize a given groupname [OPTIONAL]
-    * Forwards the result of the auth plugin of the logged in user or 
+    * Forwards the result of the auth plugin of the logged in user or
     * returns false
     *
     * @author Philipp Neuser <pneuser@physik.fu-berlin.de>
