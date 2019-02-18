@@ -186,31 +186,20 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     */
     public function checkPass($user, $pass) {
         //debug
-        //print_r($this->chained_plugins);
-        if(is_null($this->chained_auth)) {
-            foreach($this->chained_plugins as $module) {
-                if($module[1]->canDo('external')) {
-                    if($module[1]->trustExternal($user, $pass)) {
-                        $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
-                        $this->chained_auth = $module[1];
-                        return true;
-                    } else {
-                        if($module[1]->checkPass($user, $pass)) {
-                            $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
-                            $this->chained_auth = $module[1];
-                            return true;
-                        }
-                    }
-                } else {
-                    if($module[1]->checkPass($user, $pass)) {
-                        $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
-                        $this->chained_auth = $module[1];
-                        return true;
-                    }
-                }
-            }
-        } else {
+        // print_r($this->chained_plugins);
+        if(!is_null($this->chained_auth))
             return $this->chained_auth->checkPass($user, $pass);
+        foreach($this->chained_plugins as $module) {
+            if($module[1]->canDo('external') && $module[1]->trustExternal($user, $pass)) {
+                $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
+                $this->chained_auth = $module[1];
+                return true;
+            }
+            if($module[1]->checkPass($user, $pass)) {
+                $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
+                $this->chained_auth = $module[1];
+                return true;
+            }
         }
         return false;
     }
