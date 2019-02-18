@@ -101,7 +101,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
         } else {
             switch($cap) {
                 case 'Profile':
-                case 'logoff':
+                case 'logout':
                     //Depends on current user.
                     return $this->chained_auth->canDo($cap);
                 case 'UserMod':
