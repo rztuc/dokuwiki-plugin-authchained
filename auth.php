@@ -168,6 +168,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     * @return  bool             true on successful auth
     */
     public function trustExternal($user, $pass, $sticky = false) {
+        global $INPUT;
         foreach($this->chained_plugins as $module) {
             if($module[1]->canDo('external') && $module[1]->trustExternal($user, $pass, $sticky)) {
                 $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
@@ -175,6 +176,13 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                 return true;
             }
         }
+        $evdata = array(
+            'user'     => $INPUT->str('u'),
+            'password' => $INPUT->str('p'),
+            'sticky'   => $INPUT->bool('r'),
+            'silent'   => $INPUT->bool('http_credentials')
+        );
+        trigger_event('AUTH_LOGIN_CHECK', $evdata, 'auth_login_wrapper');
         return false;
     }
 
