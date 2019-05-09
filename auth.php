@@ -20,6 +20,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     protected $chained_plugins = array();
     protected $chained_auth = NULL;
     protected $usermanager_auth = NULL;
+    protected $any_external = false;
 
     /**
     * Constructor.
@@ -54,6 +55,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                 if ( !is_null($tmp_class) || $tmp_class->success ) {
                     $tmp_module = array($tmp_plugin,$tmp_class);
                     array_push($this->chained_plugins, $tmp_module);
+                    $this->any_external |= $tmp_class->canDo('external');
                 } else {
                     msg("Problem constructing $tmp_plugin",-1);
                     $this->success = false;
@@ -93,6 +95,9 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
         global $ACT;
         #      print_r($cap);
         if(is_null($this->chained_auth)) {
+            if ($cap == "external") {
+                return $this->any_external;
+            }
             if (!is_null($this->usermanager_auth)) {
                 return $this->usermanager_auth->canDo($cap);
             } else {
@@ -102,6 +107,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             switch($cap) {
                 case 'Profile':
                 case 'logout':
+                case 'external':
                     //Depends on current user.
                     return $this->chained_auth->canDo($cap);
                 case 'UserMod':
@@ -127,11 +133,6 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
                         // assume we want profile info.
                         return $this->chained_auth->canDo($cap);
                     }
-// I don't know how to handle "external" in this context yet.
-// Is it in any way sensible to mix regular auth with external auth? 
-//                case 'external':
-//                    //We are external if one of the chains is valid for external use 
-//                    return $this->trustExternal($_REQUEST['u'],$_REQUEST['p'],$_REQUEST['r']);
                 default:
                     //Everything else (false)
                     return parent::canDo($cap);
@@ -167,8 +168,22 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
     * @return  bool             true on successful auth
     */
     public function trustExternal($user, $pass, $sticky = false) {
-        if(!is_null($this->chained_auth) && $this->chained_auth->canDo('external'))
-            $this->chained_auth->trustExternal($user, $pass, $sticky);
+        global $INPUT;
+        foreach($this->chained_plugins as $module) {
+            if($module[1]->canDo('external') && $module[1]->trustExternal($user, $pass, $sticky)) {
+                $_SESSION[DOKU_COOKIE]['plugin']['authchained']['module'] = $module[0];
+                $this->chained_auth = $module[1];
+                return true;
+            }
+        }
+        $evdata = array(
+            'user'     => $INPUT->str('u'),
+            'password' => $INPUT->str('p'),
+            'sticky'   => $INPUT->bool('r'),
+            'silent'   => $INPUT->bool('http_credentials')
+        );
+        trigger_event('AUTH_LOGIN_CHECK', $evdata, 'auth_login_wrapper');
+        return false;
     }
 
     /**
