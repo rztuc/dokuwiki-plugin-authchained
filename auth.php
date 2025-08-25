@@ -2,6 +2,8 @@
 // must be run within Dokuwiki
 if(!defined('DOKU_INC')) die();
 
+use dokuwiki\Extension\Event;
+
 /**
 * Chained authentication backend
 *
@@ -182,7 +184,7 @@ class auth_plugin_authchained extends DokuWiki_Auth_Plugin {
             'sticky'   => $INPUT->bool('r'),
             'silent'   => $INPUT->bool('http_credentials')
         );
-        trigger_event('AUTH_LOGIN_CHECK', $evdata, 'auth_login_wrapper');
+        Event::createAndTrigger('AUTH_LOGIN_CHECK', $evdata, 'auth_login_wrapper');
         return false;
     }
 
